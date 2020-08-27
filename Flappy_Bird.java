@@ -22,10 +22,13 @@ public class FlappyBird
   
   public final int WIDTH=800, HEIGHT=800;
   
+  public boolean gameOver;
+  
   public ArrayList<Rectangle> columns;
   
   public Random rand;
   
+  public int ticks, yMotion;
   
   
         /*Constructor*/
@@ -45,6 +48,10 @@ public class FlappyBird
           timer.start();
           
           columns= new ArrayList<Rectangle>();
+          addColumn(true);
+          addColumn(true);
+          addColumn(true);
+          addColumn(true);
 
         }
 
@@ -54,7 +61,21 @@ public class FlappyBird
            int width= 100 ;
            int height= 50 + rand.nextInt(300);
           
-          columns.add( new Rectangle(WIDTH+ width+  columns.size()*300, height));
+           if (start)
+           {
+             columns.add( new Rectangle(WIDTH+ width+  columns.size()*300, Height-height-120, width, height));
+             columns.add(new Rectangle(WIDTH+ width+  (columns.size()-1)*300,0,width Height-height-space));
+           
+           }
+           else 
+           {
+             columns.add( new Rectangle(columns.get(columns.size()-1).x+600,HEIGHT-height-120,width,height);
+             columns.add(new Rectangle(columns.get(columns.size()-1).x,0,width Height-height-space));
+           }
+         
+          
+          
+          
           
           
         }
@@ -71,10 +92,63 @@ public class FlappyBird
         @Override
         public void actionPerformed(ActionEvent e)
         {  
+          int speed=10;
+          ticks++;
+          
+          if (started)
+          {
+          for (int i=0; i< columns.size(); i++)
+          {
+             Rectangle column=columns.get(i);
+             column.x -=10;
+          }
+          
+          if (ticks%2 ==0 && yMotion<15)
+          {
+            yMotion +=2;   
+          }
+          for (int i=0; i< columns.size(); i++)
+          {
+            Rectangle column = columns.get(i);
+            if (column.x + column.width < 0)
+            {
+              columns.remove(column);
+              if (column.y==0)
+              {
+                addColumn(false);
+              
+              }
+              
+            }
+              
+          }
+          }
+          bird.y+=yMotion;
+          
+          for (Rectangle column : columns)
+          {
+           if (column.intersects(bird))
+           {
+             gameOver= true;
+           }
+          
+          }
+          
+          if (bird.y > HEIGHT-120 || bird.y<0)
+            {
+             bird.x=column.x-bird.width;
+             gameOver= true;
+           }
+          }
+         
+        if (gameOver)
+           {
+            bird.y=HEIGHT-120-bird.height;
+          }
+  
          renderer.repaint();
-        }
-  
-  
+        
+       
         public void repaint(Graphics g)
         {
           g.setColor(Color.cyan);
@@ -90,7 +164,23 @@ public class FlappyBird
           g.fillRect(bird.x,bird.y, bird.width, bird.height);
           
         }
-
+        for (Rectangle column: columns)
+        {
+          paintColumn(g, column);
+        }
+        
+        g.setColor(Color.white);
+        g.setFont(new Font("Arial",1,100));
+                         
+        if (!gameOver)
+        {
+          g.drawString("Click to start!",100, HEIGHT/2-50)
+        }
+                   
+        if (gameOver)
+        {
+          g.drawString("Game Over !",100, HEIGHT/2-50)
+        }
   
  
   
