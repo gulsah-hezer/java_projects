@@ -11,7 +11,7 @@ import javax.swing.Jframe;
 import java.util.Timer;
 import java.awt.Graphics;
 
-public class FlappyBird
+public class FlappyBird implements ActionListener, MouseListener
 {
 
   public static FlappyBird flappyBird;
@@ -44,6 +44,7 @@ public class FlappyBird
           jframe.setDefaultCloseOperation(Jframe.EXIT_ON_CLOSE);
           jframe.setSize(WIDTH, HEIGHT);
           jframe.setVisible(true);
+          jframe.addMouseListener(this);
           bird = new Rectangle(WIDTH/2 -10, HEIGHT/2 -10, 20, 20);
           timer.start();
           
