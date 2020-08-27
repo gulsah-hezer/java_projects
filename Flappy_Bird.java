@@ -7,6 +7,7 @@
 
 package FlappyBird;
 import javax.swing.Jframe;
+İMPORT
 
 
 public class FlappyBird
@@ -17,6 +18,8 @@ public class FlappyBird
   public FlappyBird()
   {
     Jframe jframe=new Jframe();
+    
+    public final int WIDTH=800, HEIGHT=800;
     jframe.setDefaultCloseOperation(Jframe.EXIT_ON_CLOSE);
     jframe.setSize(WIDTH, HEIGHT);
     jframe.setVisible(true);
